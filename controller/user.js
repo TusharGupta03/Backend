@@ -70,7 +70,7 @@ const getNotification = async (req, res, next) => {
         const notifications = await notification.find({ user_id: req.user.id })
         res.json({
             sucess: true,
-            notifications: notifications[0].reverse()
+            notifications: notifications[0]
         })
 
 
