@@ -76,7 +76,12 @@ const server = app.listen(PORT, () => {
     connect()
 })
 
-const io = socketio(server)
+const io = socketio(server, {
+    cors: {
+        origin: 'https://master--grand-wisp-10972e.netlify.app',
+        methods: ['GET', 'POST']
+    }
+});
 
 io.on('connection', (socket) => {
     console.log(`New connection ${socket.id}`)
