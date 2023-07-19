@@ -154,7 +154,11 @@ const logout = async (req, res, next) => {
                 token: cookiee
             })
             const save = await new_expired_token.save()
-            res.clearCookie("token")
+            res.clearCookie("token", {
+                httpOnly: true,
+                secure: true,
+                sameSite: 'none'
+            })
             res.json({
                 status: 200
             })
