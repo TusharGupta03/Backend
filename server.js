@@ -18,7 +18,7 @@ const app = express()
 
 
 
-app.use(cors({ credentials: true, origin: 'https://projectbackend-ycya.onrender.com' }))
+app.use(cors({ credentials: true, origin: 'https://master--grand-wisp-10972e.netlify.app' }))
 app.use(bodyParser.json({ limit: 90000000 }));
 app.use(express.json())
 app.use(cookieParser())
