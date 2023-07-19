@@ -18,7 +18,7 @@ const app = express()
 
 
 
-app.use(cors({ credentials: true, origin: 'http://localhost:3000' }))
+app.use(cors({ credentials: true, origin: 'https://projectbackend-ycya.onrender.com' }))
 app.use(bodyParser.json({ limit: 90000000 }));
 app.use(express.json())
 app.use(cookieParser())
