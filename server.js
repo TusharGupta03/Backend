@@ -19,6 +19,13 @@ const app = express()
 
 
 app.use(cors({ credentials: true, origin: 'https://master--grand-wisp-10972e.netlify.app' }))
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', 'https://master--grand-wisp-10972e.netlify.app');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    next();
+});
+
+
 app.use(bodyParser.json({ limit: 90000000 }));
 app.use(express.json())
 app.use(cookieParser())
