@@ -66,6 +66,8 @@ const login = async (req, res, next) => {
 
             let bufferObj = Buffer.from(find.password, "base64");
             let pass = bufferObj.toString("utf8");
+            console.log(pass)
+            console.log(req.body.password)
             if (pass === req.body.password) {
 
                 const token = jwt.sign({ id: find._id, isAdmin: find.isadmin }, process.env.Secret_Key, { expiresIn: "1hour" })
