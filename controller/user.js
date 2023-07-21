@@ -1,5 +1,12 @@
 const User = require("../schema/User")
 const notification = require("../schema/Notification")
+const cloudinary = require('cloudinary').v2;
+require('dotenv').config()
+cloudinary.config({
+    cloud_name: process.env.cloud_name,
+    api_key: process.env.api_key,
+    api_secret: process.env.api_secret,
+});
 
 
 const new_user = async (req, res, next) => {
@@ -9,6 +16,20 @@ const new_user = async (req, res, next) => {
         let bufferObj = Buffer.from(pass, "utf8");
         pass = bufferObj.toString("base64");
         req.body.password = pass
+
+        const images = req.body.photo
+        console.log("a")
+        console.log(images)
+        const imageUrls = [];
+        for (let i = 0; i < images.length; i++) {
+            const result = await cloudinary.uploader.upload(images[i], {
+                folder: 'images',
+            });
+            imageUrls.push(result.secure_url);
+        }
+        console.log("b")
+
+        req.body.photo = imageUrls
 
         const user = new User(req.body);
         const save_user = await user.save()
