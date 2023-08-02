@@ -131,7 +131,7 @@ const fetching = async () => {
 
         socket.on("make_user_online", async () => {
 
-            let result = await online_users.findindex((obj) => obj.socket === socket.decoded.id)
+            let result =  online_users.findIndex((obj) => obj.socket === socket.decoded.id)
             console.log(`Result is ${result}`)
             if (result !== -1) {
 
@@ -299,7 +299,7 @@ const fetching = async () => {
 
             let time = `${day}-${month}-${year}  ${hours}.${minutes} ${ampm}`;
 
-            let result = await online_users.findIndex((obj) => obj.socket === socket.decoded.id)
+            let result =  online_users.findIndex((obj) => obj.socket === socket.decoded.id)
             console.log(result)
             if (result !== -1) {
                 online_users[result].is_online = false
