@@ -39,7 +39,7 @@ const matched_chat_profile = async (req, res, next) => {
     try {
         const user = await Matched_profile.find({ user_id: req.user.id })
         let ids = null
-        if (user) {
+        if (user.length!==0) {
             ids = user[0]._ids
         }
         const profiles = await User.find({ _id: { $in: ids } }, '_id name dob photo')
