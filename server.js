@@ -132,7 +132,7 @@ const fetching = async () => {
         socket.on("make_user_online", async () => {
 
             let result = await online_users.findindex((obj) => obj.socket === socket.decoded.id)
-            console.log(result)
+            console.log(`Result is ${result}`)
             if (result !== -1) {
 
                 const update = await Online_users.findOneAndUpdate({ socket: socket.decoded.id }, { user: socket.id, is_online: true }, { new: true })
@@ -260,7 +260,7 @@ const fetching = async () => {
             minutes = minutes < 10 ? '0' + minutes : minutes;
 
             let time = `${day}-${month}-${year}  ${hours}.${minutes} ${ampm}`;
-            let result =  online_users.findIndex((obj) => obj.socket === socket.decoded.id)
+            let result = await online_users.findIndex((obj) => obj.socket === socket.decoded.id)
             console.log(result)
             if (result !== -1) {
                 online_users[result].is_online = false
