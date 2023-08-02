@@ -273,6 +273,43 @@ const fetching = async () => {
 
             io.emit("user_disconnected", { online_users: online_users })
         })
+        socket.on('logout', async () => {
+            // const filteredArray = online_users.filter((obj) => obj.socket !== socket.decoded.id);
+
+            // online_users = filteredArray
+            let date = new Date()
+            // let time = `${d.getHours() - 12}.${d.getMinutes()}`
+
+            let hours = date.getHours();
+            let minutes = date.getMinutes();
+            let ampm = hours >= 12 ? 'pm' : 'am';
+
+            const year = date.getFullYear();
+            const month = date.getMonth();
+            const day = date.getDate();
+
+            hours = hours % 12;
+            hours = hours ? hours : 12;
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+
+            let time = `${day}-${month}-${year}  ${hours}.${minutes} ${ampm}`;
+
+            let result = await online_users.find((obj) => obj.socket === socket.decoded.id)
+            console.log(result)
+
+
+            const update = await Online_users.findOneAndUpdate({ socket: socket.decoded.id }, { is_online: false, last_seen: time }, { new: true })
+
+            result.is_online = false
+            result.last_seen = time
+
+            console.log("disconnected users")
+            console.log(online_users)
+
+            io.emit("user_disconnected", { online_users: online_users })
+        })
+
+
 
 
 

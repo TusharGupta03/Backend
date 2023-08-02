@@ -26,7 +26,7 @@ const matched_profile = async (req, res, next) => {
 
 
 
-        const matched_profile = await User.find({ intrest: { $in: intrest }, _id: { $ne: user._id }, gender: gender, _id: { $nin: ids } })
+        const matched_profile = await User.find({ intrest: { $in:   intrest }, _id: { $ne: user._id }, gender: gender, _id: { $nin: ids } })
         res.json({ sucess: true, matched_profile: matched_profile, user_intrest: intrest })
 
     } catch (error) {
