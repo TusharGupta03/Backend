@@ -135,13 +135,16 @@ const fetching = async () => {
             console.log(result)
             if (result) {
 
+                let result2 = online_users.findindex((obj) => obj.socket === socket.decoded.id)
 
+                if (result2 !== -1) {
+
+                    online_users[result2].user = socket.id;
+                    online_users[result2].is_online = true;
+                }
                 const update = await Online_users.findOneAndUpdate({ socket: socket.decoded.id }, { user: socket.id, is_online: true }, { new: true })
                 // update.user = socket.id;
                 // update.is_online = true;
-
-                result.user = socket.id;
-                result.is_online = true;
 
             }
             else {
@@ -294,14 +297,16 @@ const fetching = async () => {
 
             let time = `${day}-${month}-${year}  ${hours}.${minutes} ${ampm}`;
 
-            let result = await online_users.find((obj) => obj.socket === socket.decoded.id)
+            let result = online_users.findIndex((obj) => obj.socket === socket.decoded.id)
             console.log(result)
+            if (result !== -1) {
+                online_users[result].is_online = false
+                online_users[result].last_seen = time
+
+            }
 
 
             const update = await Online_users.findOneAndUpdate({ socket: socket.decoded.id }, { is_online: false, last_seen: time }, { new: true })
-
-            result.is_online = false
-            result.last_seen = time
 
             console.log("disconnected users")
             console.log(online_users)
