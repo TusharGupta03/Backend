@@ -18,8 +18,6 @@ const new_user = async (req, res, next) => {
         req.body.password = pass
 
         const images = req.body.photo
-        console.log("a")
-        console.log(images)
         const imageUrls = [];
         for (let i = 0; i < images.length; i++) {
             const result = await cloudinary.uploader.upload(images[i], {
@@ -27,7 +25,6 @@ const new_user = async (req, res, next) => {
             });
             imageUrls.push(result.secure_url);
         }
-        console.log("b")
 
         req.body.photo = imageUrls
 
@@ -36,7 +33,6 @@ const new_user = async (req, res, next) => {
 
 
         const id = await User.find({ email: req.body.email })
-        console.log(id)
         const notifi = new notification({
             user_id: id[0]._id,
             notification: ["Welcome to our dating website"]
@@ -76,7 +72,6 @@ const addNotification = async (req, res, next) => {
     try {
         const user = await User.findById(req.user.id)
         let notifications = await notification.updateOne({ user_id: "648c17580ec62c2e2e5b017f" }, { $push: { notification: `There is a notification from${user.name} ` } })
-        console.log(notifications)
         res.send(notifications)
 
 

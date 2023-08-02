@@ -1,4 +1,5 @@
 const Liked_profile = require("../schema/Liked_profile");
+const Matched_profile = require("../schema/Matched_profile");
 const Seened_profile = require("../schema/Seened_profile")
 const User = require("../schema/User")
 const mongoose = require('mongoose');
@@ -27,6 +28,23 @@ const matched_profile = async (req, res, next) => {
 
         const matched_profile = await User.find({ intrest: { $in: intrest }, _id: { $ne: user._id }, gender: gender, _id: { $nin: ids } })
         res.json({ sucess: true, matched_profile: matched_profile, user_intrest: intrest })
+
+    } catch (error) {
+        next(error)
+    }
+
+
+}
+const matched_chat_profile = async (req, res, next) => {
+    try {
+        const user = await Matched_profile.find({ user_id: req.user.id })
+        let ids = null
+        if (user) {
+            ids = user[0]._ids
+        }
+        const profiles = await User.find({ _id: { $in: ids } }, '_id name dob photo')
+
+        res.json({ sucess: true, matched_chat_profile: profiles })
 
     } catch (error) {
         next(error)
@@ -81,7 +99,17 @@ const like = async (req, res, next) => {
             const result = likes.includes(req.user.id)
             if (result) {
                 const user = await User.findById(req.user.id)
-                
+
+                try {
+                    const update = await Matched_profile.findOneAndUpdate({ user_id: req.user.id }, { $push: { _ids: req.body.id } }, { new: true, upsert: true })
+                    const update2 = await Matched_profile.findOneAndUpdate({ user_id: req.body.id }, { $push: { _ids: req.user.id } }, { new: true, upsert: true })
+
+
+
+                } catch (error) {
+                    next(error)
+                }
+
                 res.json({ sucess: true, code: "matched", user: user })
 
             }
@@ -107,7 +135,6 @@ const like_profile = async (req, res, next) => {
     try {
         const find = await Liked_profile.findOne({ user_id: req.user.id })
         let ids = null
-        console.log(find)
         if (find) {
             ids = find._ids
         }
@@ -124,4 +151,4 @@ const like_profile = async (req, res, next) => {
 }
 
 
-module.exports = { matched_profile, seen, like, like_profile }
+module.exports = { matched_profile, seen, like, like_profile, matched_chat_profile }

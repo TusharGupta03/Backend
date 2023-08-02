@@ -37,7 +37,6 @@ const otpgenerator = async (req, res, next) => {
                 error = err_creation(404, "Plz Check Your Email Id")
                 next(error)
             } else {
-                console.log('Email sent: ' + info.response);
                 const a = {
                     status: 200,
 
@@ -66,8 +65,6 @@ const login = async (req, res, next) => {
 
             let bufferObj = Buffer.from(find.password, "base64");
             let pass = bufferObj.toString("utf8");
-            console.log(pass)
-            console.log(req.body.password)
             if (pass === req.body.password) {
 
                 const token = jwt.sign({ id: find._id, isAdmin: find.isadmin }, process.env.Secret_Key, { expiresIn: "1hour" })
@@ -103,7 +100,6 @@ const login = async (req, res, next) => {
 const token_verification = (req, res, next) => {
     try {
         const token = req.cookies.token;
-        // console.log(token)
         if (token === null) {
             err = err_creation(401, "You haven't Logged in")
             next(err)
